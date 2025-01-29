@@ -32,9 +32,9 @@ func main() {
     // serverMux is a go router
     mux := http.NewServeMux()
     // home is now the handler for the '/' route
-    mux.HandleFunc("/{$}", home) // The $ stops it from being a catch-all
-    mux.HandleFunc("/snippet/view/{id}", snippetView)
-    mux.HandleFunc("/snippet/create", snippetCreate)
+    mux.HandleFunc("GET /{$}", home) // The $ stops it from being a catch-all
+    mux.HandleFunc("GET /snippet/view/{id}", snippetView)
+    mux.HandleFunc("GET /snippet/create", snippetCreate)
 
     log.Print("Starting server on :4000")
 
