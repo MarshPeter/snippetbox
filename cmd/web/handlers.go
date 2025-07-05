@@ -10,7 +10,7 @@ import (
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Server", "Go")
 
-	files := []string {
+	files := []string{
 		"./ui/html/base.html",
 		"./ui/html/partials/nav.html",
 		"./ui/html/pages/home.html",
@@ -33,7 +33,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 
-	if err != nil || id < 1{
+	if err != nil || id < 1 {
 		http.NotFound(w, r)
 		return
 	}
@@ -46,7 +46,18 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusCreated)
+	title := "O snail"
 
-	w.Write([]byte("Save a new Snippet"))
+	content := "O snail\nClimb Mount Fuji,\nBut Slowly, slowly!\n\n-Kobayashi Issa"
+
+	expires := 7
+
+	id, err := app.snippets.Insert(title, content, expires)
+
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
 }
